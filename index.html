@@ -734,7 +734,7 @@
     // Start & fade in new track
     const t = tracks[newIdx];
     if (t.paused) {
-      if (t.currentTime < START_TIMES[newIdx]) t.currentTime = START_TIMES[newIdx];
+      t.currentTime = START_TIMES[newIdx];
       t.play().catch(() => {});
     }
     fadeTo(newIdx, TARGET_VOL);
