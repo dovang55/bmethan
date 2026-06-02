@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Bar Mitzvah · Ethan Haziza</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Italiana&family=Inter:wght@300;400;500&family=Frank+Ruhl+Libre:wght@300;400;500&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
   a{color:inherit;text-decoration:none}
 
   /* ===== PAGED DECK (no scroll between sections) ===== */
-  .deck{display:flex;width:100vw;height:100vh;transition:transform .8s cubic-bezier(.76,0,.24,1)}
+  .deck{display:flex;width:100vw;height:100vh;transition:transform .8s cubic-bezier(.76,0,.24,1);overflow:hidden;touch-action:pan-y}
   .deck > section,.deck > footer{
     flex:0 0 100vw;width:100vw;height:100vh;
     overflow-y:auto;overflow-x:hidden;
@@ -63,7 +63,7 @@
     .nav-arrow svg{width:15px;height:15px}
     .nav-arrow.prev{left:6px}
     .nav-arrow.next{right:6px}
-    .deck > section,.deck > footer{padding:80px 16px 110px}
+    .deck > section,.deck > footer{padding:80px 64px 110px}
     .pager{bottom:36px}
   }
 
@@ -75,6 +75,11 @@
     radial-gradient(ellipse 65% 50% at 78% 75%, rgba(168,134,90,.08), transparent 70%),
     linear-gradient(155deg, #f8efe1 0%, #f1e5cf 50%, #ebdcc0 100%);
   }
+
+  /* Bandes latérales */
+  .side-band{position:fixed;top:0;bottom:0;width:58px;z-index:60;pointer-events:none}
+  .side-band.left{left:0;background:linear-gradient(to right,var(--cream-warm) 60%,transparent)}
+  .side-band.right{right:0;background:linear-gradient(to left,var(--cream-warm) 60%,transparent)}
 
   /* בס"ד watermark */
   .bsd{position:fixed;top:20px;right:24px;z-index:55;font-family:'Frank Ruhl Libre','Cormorant Garamond',serif;font-size:14px;letter-spacing:.04em;color:var(--bronze);opacity:.7;direction:rtl;pointer-events:none}
@@ -321,6 +326,8 @@
 <body>
 
 <div class="bg-marble"></div>
+<div class="side-band left"></div>
+<div class="side-band right"></div>
 
 <div class="bsd">בס"ד</div>
 
