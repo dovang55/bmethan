@@ -4,12 +4,14 @@ const multer   = require('multer');
 const cors     = require('cors');
 const path     = require('path');
 const fs       = require('fs');
+const ws       = require('ws');
 const { createClient } = require('@supabase/supabase-js');
 
 // ── Supabase ──────────────────────────────────────────────────────────────────
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY,
+  { realtime: { transport: ws } }
 );
 
 const BUCKET     = 'ethan-videos';
