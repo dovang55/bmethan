@@ -63,7 +63,8 @@
     .nav-arrow svg{width:15px;height:15px}
     .nav-arrow.prev{left:6px}
     .nav-arrow.next{right:6px}
-    .deck > section,.deck > footer{padding:64px 16px 80px}
+    .deck > section,.deck > footer{padding:80px 16px 110px}
+    .pager{bottom:36px}
   }
 
   /* Soft cream gradient background */
@@ -679,10 +680,9 @@
     new Audio('assets/music3.mp3')
   ];
   tracks.forEach(t => { t.loop = true; t.volume = 0; });
-  // music1 : démarre et boucle toujours à partir de 40 secondes
   tracks[0].loop = false;
-  tracks[0].currentTime = 40;
-  tracks[1].currentTime = 10; // music2 démarre à 10 secondes
+  // Temps de départ par piste (définis juste avant play, pas à l'init — nécessaire sur mobile)
+  const START_TIMES = [40, 10, 0];
   tracks[0].addEventListener('ended', () => {
     tracks[0].currentTime = 40;
     if (currentTrack === 0) tracks[0].play().catch(() => {});
@@ -734,7 +734,7 @@
     // Start & fade in new track
     const t = tracks[newIdx];
     if (t.paused) {
-      t.currentTime = t.currentTime || 0;
+      if (t.currentTime < START_TIMES[newIdx]) t.currentTime = START_TIMES[newIdx];
       t.play().catch(() => {});
     }
     fadeTo(newIdx, TARGET_VOL);
@@ -750,6 +750,7 @@
     const ti = PAGE_TRACK[idx] ?? 0;
     currentTrack = -1; // force switch
     const t = tracks[ti];
+    t.currentTime = START_TIMES[ti];
     t.play().then(() => {
       fadeTo(ti, TARGET_VOL);
       currentTrack = ti;
