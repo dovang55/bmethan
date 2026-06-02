@@ -76,11 +76,6 @@
     linear-gradient(155deg, #f8efe1 0%, #f1e5cf 50%, #ebdcc0 100%);
   }
 
-  /* Bandes latérales */
-  .side-band{position:fixed;top:0;bottom:0;width:58px;z-index:60;pointer-events:none}
-  .side-band.left{left:0;background:linear-gradient(to right,var(--cream-warm) 60%,transparent)}
-  .side-band.right{right:0;background:linear-gradient(to left,var(--cream-warm) 60%,transparent)}
-
   /* בס"ד watermark */
   .bsd{position:fixed;top:20px;right:24px;z-index:55;font-family:'Frank Ruhl Libre','Cormorant Garamond',serif;font-size:14px;letter-spacing:.04em;color:var(--bronze);opacity:.7;direction:rtl;pointer-events:none}
 
@@ -326,8 +321,6 @@
 <body>
 
 <div class="bg-marble"></div>
-<div class="side-band left"></div>
-<div class="side-band right"></div>
 
 <div class="bsd">בס"ד</div>
 
