@@ -193,6 +193,16 @@
   .shabbat-photo::before{content:'';position:absolute;top:14px;left:14px;right:14px;bottom:14px;border:1px dashed rgba(201,168,124,.25)}
   .shabbat-photo .ph-label{font-family:'Italiana',serif;font-size:10px;letter-spacing:.4em;text-transform:uppercase;position:relative;z-index:2;color:var(--gold)}
 
+  /* Bordure décorative photo */
+  .photo-frame{position:relative;display:inline-block;max-width:520px;width:100%;margin:0 auto 48px}
+  .photo-frame img{display:block;width:100%;border:1px solid rgba(168,134,90,.5)}
+  .photo-frame::before,.photo-frame::after{content:'';position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:2;pointer-events:none}
+  .photo-frame::before{top:-7px;left:-7px;border-width:1px 0 0 1px}
+  .photo-frame::after{bottom:-7px;right:-7px;border-width:0 1px 1px 0}
+  .photo-frame .corner-tr,.photo-frame .corner-bl{position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:2;pointer-events:none}
+  .photo-frame .corner-tr{top:-7px;right:-7px;border-width:1px 1px 0 0}
+  .photo-frame .corner-bl{bottom:-7px;left:-7px;border-width:0 0 1px 1px}
+
   .shabbat-details{display:grid;gap:24px;max-width:520px;margin:0 auto}
   .shabbat-details .ev-label{color:var(--gold)}
   .shabbat-details .ev-value{color:var(--cream)}
@@ -402,16 +412,10 @@
     <div class="invite-he">איתן יצחק</div>
     <p class="invite-sub">Entouré de sa famille et de ses amis, nous serons heureux de célébrer avec vous cette étape importante de sa vie.</p>
 
-    <!-- Photo placeholder -->
-    <div class="photo-slot">
-      <div>
-        <svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-          <rect x="3" y="5" width="18" height="14" rx="1"/>
-          <circle cx="9" cy="11" r="2"/>
-          <path d="M21 17l-5-5-6 6-3-3-4 4"/>
-        </svg>
-        <div class="ph-label">Photo d'Ethan</div>
-      </div>
+    <!-- Photo Ethan -->
+    <div class="photo-frame" style="margin:48px auto">
+      <span class="corner-tr"></span><span class="corner-bl"></span>
+      <img src="assets/photo ethan.png" alt="Ethan">
     </div>
 
     <div class="event-details">
@@ -487,22 +491,16 @@
         </svg>
       </div>
 
-      <div class="shabbat-photo">
-        <div>
-          <svg style="width:36px;height:36px;margin:0 auto 14px;opacity:.6;position:relative;z-index:2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-            <rect x="3" y="5" width="18" height="14" rx="1"/>
-            <circle cx="9" cy="11" r="2"/>
-            <path d="M21 17l-5-5-6 6-3-3-4 4"/>
-          </svg>
-          <div class="ph-label">Photo / Séfer Torah</div>
-        </div>
+      <div class="photo-frame">
+        <span class="corner-tr"></span><span class="corner-bl"></span>
+        <img src="assets/photo-shabbat.png" alt="Séfer Torah">
       </div>
 
       <div class="shabbat-details">
         <div class="ev-row">
           <span class="ev-label">Date</span>
           <span class="ev-value">À l'occasion de la Bar Mitsva d'Ethan, le</span>
-          <span class="ev-value"><em>Samedi 10 octobre 2026</em></span>
+          <span class="ev-value"><em>Samedi 7 novembre 2026</em></span>
         </div>
         <div class="ev-row">
           <span class="ev-label">Lieu</span>
@@ -619,7 +617,7 @@
         <!-- Shabbat -->
         <div class="form-divider"></div>
         <h3 class="form-sub-title">Shabbat <em>Bar Mitsva</em></h3>
-        <p class="form-sub-date">Samedi 10 octobre 2026 · Synagogue Kavod Hatorah, Hadera</p>
+        <p class="form-sub-date">Samedi 7 novembre 2026 · Synagogue Kavod Hatorah, Hadera</p>
 
         <div class="field">
           <label>Votre présence</label>
