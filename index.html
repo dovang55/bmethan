@@ -193,13 +193,14 @@
   .shabbat-photo .ph-label{font-family:'Italiana',serif;font-size:10px;letter-spacing:.4em;text-transform:uppercase;position:relative;z-index:2;color:var(--gold)}
 
   /* Carrousel */
-  .carousel-frame{position:relative;max-width:520px;width:100%;margin:48px auto;overflow:hidden;border:1px solid rgba(168,134,90,.5)}
-  .carousel-frame::before,.carousel-frame::after{content:'';position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:2;pointer-events:none}
+  .carousel-frame{position:relative;max-width:520px;width:100%;margin:48px auto}
+  .carousel-frame::before,.carousel-frame::after{content:'';position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:4;pointer-events:none}
   .carousel-frame::before{top:-7px;left:-7px;border-width:1px 0 0 1px}
   .carousel-frame::after{bottom:-7px;right:-7px;border-width:0 1px 1px 0}
-  .carousel-frame .corner-tr{position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:2;pointer-events:none;top:-7px;right:-7px;border-width:1px 1px 0 0}
-  .carousel-frame .corner-bl{position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:2;pointer-events:none;bottom:-7px;left:-7px;border-width:0 0 1px 1px}
-  .carousel-track{display:flex;width:100%;transition:transform .9s cubic-bezier(.77,0,.18,1)}
+  .carousel-frame .corner-tr{position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:4;pointer-events:none;top:-7px;right:-7px;border-width:1px 1px 0 0}
+  .carousel-frame .corner-bl{position:absolute;width:22px;height:22px;border-color:var(--gold-deep);border-style:solid;z-index:4;pointer-events:none;bottom:-7px;left:-7px;border-width:0 0 1px 1px}
+  .carousel-inner{overflow:hidden;border:1px solid rgba(168,134,90,.5)}
+  .carousel-track{display:flex;width:100%}
   .carousel-track img{min-width:100%;width:100%;display:block;object-fit:cover;aspect-ratio:4/3}
 
   /* Bordure décorative photo */
@@ -417,11 +418,13 @@
     <!-- Carrousel Ethan -->
     <div class="carousel-frame">
       <span class="corner-tr"></span><span class="corner-bl"></span>
-      <div class="carousel-track" id="carouselTrack">
-        <img src="assets/photo-ethan.webp"   alt="Ethan">
-        <img src="assets/photo-ethan-2.webp" alt="Ethan">
-        <img src="assets/photo-ethan-3.webp" alt="Ethan">
-        <img src="assets/photo-ethan-4.webp" alt="Ethan">
+      <div class="carousel-inner">
+        <div class="carousel-track" id="carouselTrack">
+          <img src="assets/photo-ethan.webp"   alt="Ethan">
+          <img src="assets/photo-ethan-2.webp" alt="Ethan">
+          <img src="assets/photo-ethan-3.webp" alt="Ethan">
+          <img src="assets/photo-ethan-4.webp" alt="Ethan">
+        </div>
       </div>
     </div>
 
@@ -772,17 +775,28 @@
   document.addEventListener('click',    startAudio, { once: true });
   document.addEventListener('touchend', startAudio, { once: true });
 
-  // Carrousel automatique
+  // Carrousel automatique — boucle infinie vers la droite
   (function(){
     const track = document.getElementById('carouselTrack');
     if (!track) return;
-    const imgs = track.querySelectorAll('img');
-    const total = imgs.length;
+    const origImgs = Array.from(track.querySelectorAll('img'));
+    const total = origImgs.length;
+    // Clone les images pour la boucle sans saut visible
+    origImgs.forEach(img => track.appendChild(img.cloneNode(true)));
     let current = 0;
-    setInterval(() => {
-      current = (current + 1) % total;
+    function next() {
+      current++;
+      track.style.transition = 'transform .85s cubic-bezier(.77,0,.18,1)';
       track.style.transform = 'translateX(-' + (current * 100) + '%)';
-    }, 3500);
+    }
+    track.addEventListener('transitionend', () => {
+      if (current >= total) {
+        track.style.transition = 'none';
+        current = 0;
+        track.style.transform = 'translateX(0)';
+      }
+    });
+    setInterval(next, 2000);
   })();
 
   // Countdown
