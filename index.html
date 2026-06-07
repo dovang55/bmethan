@@ -678,7 +678,7 @@
   tracks.forEach(t => { t.loop = true; t.volume = 0; });
   tracks[0].loop = false;
   // Temps de départ par piste (définis juste avant play, pas à l'init — nécessaire sur mobile)
-  const START_TIMES = [45, 49, 0];
+  const START_TIMES = [45, 51, 0];
   tracks[0].addEventListener('ended', () => {
     tracks[0].currentTime = 45;
     if (currentTrack === 0) tracks[0].play().catch(() => {});
