@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>הזמנה · בר מצווה לאיתן</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Italiana&family=Frank+Ruhl+Libre:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f4ece0;
+    --cream-warm:#f8efe1;
+    --cream-deep:#ebe0cd;
+    --paper:#faf3e7;
+    --gold:#c9a87c;
+    --gold-bright:#dabf94;
+    --gold-deep:#a8865a;
+    --bronze:#8a6a48;
+    --ink:#2a2520;
+    --ink-soft:#4a3f33;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh;font-family:'Frank Ruhl Libre',serif;font-weight:300;color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    display:grid;place-items:center;padding:40px 16px;
+    background:
+      radial-gradient(ellipse 70% 50% at 18% 22%, rgba(255,251,243,.7), transparent 65%),
+      radial-gradient(ellipse 60% 50% at 82% 18%, rgba(218,191,148,.15), transparent 65%),
+      radial-gradient(ellipse 55% 45% at 25% 80%, rgba(218,191,148,.12), transparent 65%),
+      radial-gradient(ellipse 65% 50% at 78% 75%, rgba(168,134,90,.08), transparent 70%),
+      linear-gradient(155deg, #f8efe1 0%, #f1e5cf 50%, #ebdcc0 100%);
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+
+  .bsd{position:absolute;top:18px;left:22px;font-family:'Frank Ruhl Libre',serif;font-size:13px;letter-spacing:.04em;color:var(--bronze);opacity:.7}
+
+  .card{position:relative;max-width:560px;width:100%;background:var(--paper);padding:64px 40px 54px;border:1px solid rgba(168,134,90,.25);box-shadow:0 30px 80px rgba(138,106,72,.18), 0 1px 0 rgba(255,255,255,.6) inset;text-align:center}
+  .card::before,.card::after{content:'';position:absolute;width:30px;height:30px;border:1px solid var(--gold-deep)}
+  .card::before{top:12px;right:12px;border-left:none;border-bottom:none}
+  .card::after{bottom:12px;left:12px;border-right:none;border-top:none}
+  .corner-tl{position:absolute;top:12px;left:12px;width:30px;height:30px;border-top:1px solid var(--gold-deep);border-left:1px solid var(--gold-deep)}
+  .corner-br{position:absolute;bottom:12px;right:12px;width:30px;height:30px;border-bottom:1px solid var(--gold-deep);border-right:1px solid var(--gold-deep)}
+
+  .eyebrow{font-family:'Italiana',serif;font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);margin-bottom:24px;font-family:'Frank Ruhl Libre',serif}
+  .eyebrow::before,.eyebrow::after{content:'';display:inline-block;width:24px;height:1px;background:var(--gold-deep);vertical-align:middle;margin:0 12px}
+
+  .logo{width:min(150px,40vw);margin:0 auto 28px;filter:drop-shadow(0 12px 24px rgba(138,106,72,.2))}
+
+  .parasha-note{font-family:'Frank Ruhl Libre',serif;font-style:italic;font-size:16px;color:var(--gold-deep);letter-spacing:.02em;margin-bottom:36px}
+  .parasha-note em{font-style:normal;font-weight:500;color:var(--bronze)}
+
+  .ornament{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 32px}
+  .ornament .line{width:64px;height:1px;background:var(--gold-deep)}
+  .ornament svg{width:16px;height:16px;color:var(--gold-deep)}
+
+  .invite-lead{font-family:'Frank Ruhl Libre',serif;font-size:clamp(20px,2.8vw,25px);color:var(--ink);line-height:1.9;font-weight:400;margin-bottom:18px}
+  .invite-lead strong{font-weight:500;color:var(--gold-deep)}
+  .invite-sub{font-family:'Frank Ruhl Libre',serif;font-size:clamp(16px,2vw,18px);color:var(--ink-soft);line-height:1.9;max-width:460px;margin:22px auto 0}
+
+  .event-details{margin:40px 0 8px}
+  .ev-row{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
+  .ev-label{font-family:'Italiana',serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);font-family:'Frank Ruhl Libre',serif;font-weight:500}
+  .ev-value{font-family:'Frank Ruhl Libre',serif;font-size:19px;color:var(--ink);font-weight:400}
+  .ev-value em{font-style:normal;color:var(--gold-deep);font-weight:500}
+
+  .transport{margin:34px auto 8px;max-width:440px;padding:18px 20px;border:1px dashed rgba(168,134,90,.4);background:rgba(201,168,124,.08)}
+  .transport-label{font-size:11px;letter-spacing:.15em;color:var(--bronze);font-weight:500;margin-bottom:6px}
+  .transport-value{font-size:18px;color:var(--ink);font-weight:400}
+
+  .waze-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:'Frank Ruhl Libre',serif;font-size:14px;letter-spacing:.05em;cursor:pointer;transition:all .25s;text-decoration:none;margin-top:24px}
+  .waze-btn:hover{background:var(--ink);color:var(--cream)}
+  .waze-btn svg{width:15px;height:15px}
+
+  .followup{font-family:'Frank Ruhl Libre',serif;font-style:italic;font-size:17px;color:var(--ink-soft);margin-top:32px;line-height:1.6}
+
+  @media print{
+    body{padding:0;background:var(--paper)}
+    .card{box-shadow:none;max-width:100%}
+  }
+  @media(max-width:480px){
+    .card{padding:48px 24px 40px}
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <span class="corner-tl"></span><span class="corner-br"></span>
+    <span class="bsd">בס"ד</span>
+
+    <div class="eyebrow">בר מצווה</div>
+    <img class="logo" src="assets/logo-ethan.webp" alt="איתן">
+
+    <p class="parasha-note">— לרגל פרשת <em>חיי שרה</em> —</p>
+
+    <p class="invite-lead">בשמחה רבה ובהתרגשות גדולה<br>מזמין אתכם לחגוג איתי<br>את <strong>הבר מצווה שלי</strong></p>
+
+    <div class="ornament">
+      <span class="line"></span>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
+      <span class="line"></span>
+    </div>
+
+    <p class="invite-sub">נשמח מאוד לחגוג יחד איתכם את היום המיוחד הזה!</p>
+
+    <div class="event-details">
+      <div class="ev-row">
+        <span class="ev-label">תאריך</span>
+        <span class="ev-value">יום <em>חמישי, 5 בנובמבר 2026</em></span>
+        <span class="ev-value" style="font-size:15px;color:var(--ink-soft)">כ"ה בחשוון תשפ"ז</span>
+      </div>
+      <div class="ev-row">
+        <span class="ev-label">שעה</span>
+        <span class="ev-value">התפילה תחל בשעה <em>8:30</em></span>
+      </div>
+      <div class="ev-row">
+        <span class="ev-label">מקום</span>
+        <span class="ev-value">אולמי <em>YONO קיסריה</em></span>
+        <span class="ev-value" style="font-size:15px;color:var(--ink-soft)">רחוב חלמיש 18 · קיסריה</span>
+      </div>
+    </div>
+
+    <div class="transport">
+      <div class="transport-label">🚌 הסעה</div>
+      <div class="transport-value">היציאה תתקיים מהישיבה</div>
+    </div>
+
+    <a class="waze-btn" href="https://waze.com/ul?q=Khalamish%20St%2018%20Caesarea%20Israel" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12c0 4.97-4.03 9-9 9-1.05 0-2.06-.18-3-.51L4 22l1.51-5C4.55 16.06 4 13.61 4 12 4 7.03 8.03 3 12.5 3 17.47 3 21 7.03 21 12z"/></svg>
+      <span>ניווט בוויז</span>
+    </a>
+
+    <p class="followup">— התפילה תלווה בקידוש —</p>
+  </div>
+
+</body>
+</html>
