@@ -74,6 +74,15 @@
   .followup{margin:20px auto 0;padding:12px 18px;max-width:400px;border:1px solid rgba(168,134,90,.4);background:rgba(201,168,124,.1)}
   .followup-text{font-family:'Italiana',serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-deep);font-weight:400}
 
+  /* Vidéo souvenir */
+  .video-block{margin-top:24px;padding-top:20px;border-top:1px dashed rgba(168,134,90,.35)}
+  .video-block-title{font-family:'Italiana',serif;font-size:15px;color:var(--ink);font-weight:400;margin-bottom:6px}
+  .video-block-title em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-deep);font-weight:300}
+  .video-block-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--ink-soft);line-height:1.45;margin-bottom:12px}
+  .video-btn{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;background:var(--ink);color:var(--cream);font-family:'Italiana',serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;border:none;transition:all .25s;text-decoration:none}
+  .video-btn:hover{background:var(--bronze)}
+  .video-btn svg{width:14px;height:14px}
+
   /* RSVP */
   .rsvp{margin-top:28px;padding-top:24px;border-top:1px dashed rgba(168,134,90,.35);text-align:left}
   .rsvp-title{font-family:'Italiana',serif;font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);text-align:center;margin-bottom:16px}
@@ -152,6 +161,15 @@
     </a>
 
     <div class="followup"><span class="followup-text">L'office sera suivi d'une réception</span></div>
+
+    <div class="video-block">
+      <div class="video-block-title">Une <em>vidéo</em> pour Ethan !</div>
+      <p class="video-block-text">Laissez un souvenir mémorable à Ethan : envoyez-nous une vidéo surprise pour lui.</p>
+      <a class="video-btn" href="upload.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16 M4 12h16"/></svg>
+        <span>Envoyer ma vidéo</span>
+      </a>
+    </div>
 
     <div class="rsvp" id="rsvp">
       <div class="rsvp-title">Confirmez votre présence</div>
