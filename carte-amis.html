@@ -300,6 +300,9 @@
     nextBtn.disabled = idx === 0;
     sidePrevBtn.disabled = idx === pages.length - 1;
     sideNextBtn.disabled = idx === 0;
+    // Flèches centrales visibles uniquement sur la 1ère page
+    sidePrevBtn.style.display = idx === 0 ? '' : 'none';
+    sideNextBtn.style.display = idx === 0 ? '' : 'none';
   }
   window.addEventListener('resize', setHeight);
 
