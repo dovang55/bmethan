@@ -24,7 +24,7 @@
   body{
     min-height:100vh;font-family:'Inter',sans-serif;font-weight:300;color:var(--ink);
     -webkit-font-smoothing:antialiased;
-    display:grid;place-items:center;padding:40px 16px;
+    display:flex;justify-content:center;align-items:center;padding:40px 16px;
     background:
       radial-gradient(ellipse 70% 50% at 18% 22%, rgba(255,251,243,.7), transparent 65%),
       radial-gradient(ellipse 60% 50% at 82% 18%, rgba(218,191,148,.15), transparent 65%),
@@ -35,21 +35,35 @@
   img{display:block;max-width:100%}
   a{color:inherit;text-decoration:none}
 
-  .bsd{position:absolute;top:18px;right:22px;font-family:'Frank Ruhl Libre','Cormorant Garamond',serif;font-size:13px;letter-spacing:.04em;color:var(--bronze);opacity:.7;direction:rtl}
+  .bsd{position:absolute;top:18px;right:22px;font-family:'Frank Ruhl Libre','Cormorant Garamond',serif;font-size:13px;letter-spacing:.04em;color:var(--bronze);opacity:.7;direction:rtl;z-index:2}
 
-  .card{position:relative;max-width:480px;width:100%;background:var(--paper);padding:40px 32px 32px;border:1px solid rgba(168,134,90,.25);box-shadow:0 30px 80px rgba(138,106,72,.18), 0 1px 0 rgba(255,255,255,.6) inset;text-align:center}
+  .card{position:relative;max-width:480px;width:100%;background:var(--paper);padding:40px 32px 28px;border:1px solid rgba(168,134,90,.25);box-shadow:0 30px 80px rgba(138,106,72,.18), 0 1px 0 rgba(255,255,255,.6) inset;text-align:center}
   .card::before,.card::after{content:'';position:absolute;width:30px;height:30px;border:1px solid var(--gold-deep)}
   .card::before{top:12px;left:12px;border-right:none;border-bottom:none}
   .card::after{bottom:12px;right:12px;border-left:none;border-top:none}
   .corner-tr{position:absolute;top:12px;right:12px;width:30px;height:30px;border-top:1px solid var(--gold-deep);border-right:1px solid var(--gold-deep)}
   .corner-bl{position:absolute;bottom:12px;left:12px;width:30px;height:30px;border-bottom:1px solid var(--gold-deep);border-left:1px solid var(--gold-deep)}
 
-  .eyebrow{font-family:'Italiana',serif;font-size:10px;letter-spacing:.5em;text-transform:uppercase;color:var(--bronze);margin-bottom:14px}
+  /* Deck (pages) */
+  .deck-viewport{overflow:hidden;position:relative}
+  .deck-track{display:flex;width:100%;align-items:flex-start;transition:transform .45s cubic-bezier(.76,0,.24,1),height .35s ease}
+  .deck-page{flex:0 0 100%;width:100%;min-width:0}
+
+  .deck-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:22px;padding-top:16px;border-top:1px dashed rgba(168,134,90,.3)}
+  .nav-arrow{width:30px;height:30px;border-radius:50%;border:1px solid rgba(168,134,90,.4);background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink-soft);transition:all .2s;flex:none;padding:0}
+  .nav-arrow:hover{border-color:var(--gold-deep);color:var(--gold-deep)}
+  .nav-arrow svg{width:13px;height:13px}
+  .nav-arrow:disabled{opacity:.25;cursor:default}
+  .pager{display:flex;gap:8px}
+  .pager .dot{width:6px;height:6px;border-radius:50%;border:none;padding:0;background:rgba(138,106,72,.3);cursor:pointer;transition:all .25s}
+  .pager .dot.active{background:var(--gold-deep);transform:scale(1.5)}
+
+  .eyebrow{font-family:'Italiana',serif;font-size:10px;letter-spacing:.5em;text-transform:uppercase;color:var(--bronze);margin-bottom:12px}
   .eyebrow::before,.eyebrow::after{content:'';display:inline-block;width:24px;height:1px;background:var(--gold-deep);vertical-align:middle;margin:0 12px}
 
-  .logo{width:min(100px,32vw);margin:0 auto 16px;filter:drop-shadow(0 12px 24px rgba(138,106,72,.2))}
+  .logo{width:min(72px,24vw);margin:0 auto 14px;filter:drop-shadow(0 12px 24px rgba(138,106,72,.2))}
 
-  .parasha-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--gold-deep);letter-spacing:.03em;margin-bottom:18px}
+  .parasha-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--gold-deep);letter-spacing:.03em;margin-bottom:16px}
   .parasha-note em{font-style:normal;font-weight:500;color:var(--bronze)}
 
   .ornament{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 16px}
@@ -74,46 +88,45 @@
   .followup{margin:20px auto 0;padding:12px 18px;max-width:400px;border:1px solid rgba(168,134,90,.4);background:rgba(201,168,124,.1)}
   .followup-text{font-family:'Italiana',serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-deep);font-weight:400}
 
-  /* Vidéo souvenir */
-  .video-block{margin-top:24px;padding-top:20px;border-top:1px dashed rgba(168,134,90,.35)}
-  .video-block-title{font-family:'Italiana',serif;font-size:15px;color:var(--ink);font-weight:400;margin-bottom:6px}
+  /* Page : Vidéo souvenir */
+  .video-page{padding:28px 0}
+  .video-block-title{font-family:'Italiana',serif;font-size:17px;color:var(--ink);font-weight:400;margin-bottom:8px}
   .video-block-title em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-deep);font-weight:300}
-  .video-block-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--ink-soft);line-height:1.45;margin-bottom:12px}
-  .video-btn{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;background:var(--ink);color:var(--cream);font-family:'Italiana',serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;border:none;transition:all .25s;text-decoration:none}
+  .video-block-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--ink-soft);line-height:1.5;margin:0 auto 18px;max-width:340px}
+  .video-btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;background:var(--ink);color:var(--cream);font-family:'Italiana',serif;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;border:none;transition:all .25s;text-decoration:none}
   .video-btn:hover{background:var(--bronze)}
   .video-btn svg{width:14px;height:14px}
 
-  /* RSVP */
-  .rsvp{margin-top:28px;padding-top:24px;border-top:1px dashed rgba(168,134,90,.35);text-align:left}
+  /* Page : RSVP */
+  .rsvp-page{padding:4px 0 0;text-align:left}
   .rsvp-title{font-family:'Italiana',serif;font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);text-align:center;margin-bottom:16px}
   .rsvp-row{display:flex;gap:10px;margin-bottom:10px}
   .rsvp-row .f{flex:1;min-width:0}
-  .rsvp label{display:block;font-family:'Italiana',serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--bronze);margin-bottom:4px}
-  .rsvp input[type=text],.rsvp input[type=number],.rsvp textarea{
+  .rsvp-page label{display:block;font-family:'Italiana',serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--bronze);margin-bottom:4px}
+  .rsvp-page input[type=text],.rsvp-page input[type=number],.rsvp-page textarea{
     width:100%;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--ink);
     background:transparent;border:none;border-bottom:1px solid rgba(168,134,90,.4);padding:6px 2px;
   }
-  .rsvp input:focus,.rsvp textarea:focus{outline:none;border-color:var(--gold-deep)}
-  .rsvp textarea{resize:vertical;min-height:44px;font-style:italic}
+  .rsvp-page input:focus,.rsvp-page textarea:focus{outline:none;border-color:var(--gold-deep)}
+  .rsvp-page textarea{resize:vertical;min-height:44px;font-style:italic}
   .rsvp-pres{display:flex;gap:18px;margin-bottom:12px}
   .rsvp-pres label{display:flex;align-items:center;gap:6px;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--ink);text-transform:none;letter-spacing:0}
-  .rsvp input[type=radio]{accent-color:var(--gold-deep)}
+  .rsvp-page input[type=radio]{accent-color:var(--gold-deep)}
   .rsvp-submit{display:block;width:100%;margin-top:16px;padding:13px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:'Italiana',serif;font-size:11px;letter-spacing:.35em;text-transform:uppercase;cursor:pointer;transition:all .25s}
   .rsvp-submit:hover{background:var(--bronze);border-color:var(--bronze)}
   .rsvp-submit:disabled{opacity:.6;cursor:default}
   .rsvp-status{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;margin-top:12px}
-  .rsvp-status.ok{color:var(--gold-deep)}
   .rsvp-status.err{color:#a8493a}
-  .rsvp.sent form{display:none}
+  .rsvp-page.sent form{display:none}
   .rsvp-thanks{display:none;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-deep);line-height:1.5}
-  .rsvp.sent .rsvp-thanks{display:block}
+  .rsvp-page.sent .rsvp-thanks{display:block}
 
   @media print{
     body{padding:0;background:var(--paper)}
     .card{box-shadow:none;max-width:100%}
   }
   @media(max-width:480px){
-    .card{padding:32px 20px 26px}
+    .card{padding:32px 20px 24px}
   }
 </style>
 </head>
@@ -123,79 +136,153 @@
     <span class="corner-tr"></span><span class="corner-bl"></span>
     <span class="bsd">בס"ד</span>
 
-    <div class="eyebrow">Bar Mitsva</div>
-    <img class="logo" src="assets/logo-ethan.webp" alt="Ethan">
+    <div class="deck-viewport">
+      <div class="deck-track" id="deckTrack">
 
-    <p class="parasha-note">— à l'occasion de la Parasha <em>Hayé Sarah</em> —</p>
+        <!-- Page 1 : Invitation -->
+        <div class="deck-page">
+          <div class="eyebrow">Bar Mitsva</div>
+          <img class="logo" src="assets/logo-ethan.webp" alt="Ethan">
 
-    <p class="invite-lead"><strong>Annaelle et Jonathan Haziza,</strong><br><strong>Ava et Aaron,</strong><br>ont le plaisir de vous convier à la Bar Mitsva d'<br><em>Ethan</em></p>
-    <div class="invite-he">איתן יצחק</div>
+          <p class="parasha-note">— à l'occasion de la Parasha <em>Hayé Sarah</em> —</p>
 
-    <div class="ornament">
-      <span class="line"></span>
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
-      <span class="line"></span>
+          <p class="invite-lead"><strong>Annaelle et Jonathan Haziza,</strong><br><strong>Ava et Aaron,</strong><br>ont le plaisir de vous convier à la Bar Mitsva d'<br><em>Ethan</em></p>
+          <div class="invite-he">איתן יצחק</div>
+
+          <div class="ornament">
+            <span class="line"></span>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
+            <span class="line"></span>
+          </div>
+
+          <p class="invite-sub">Entouré de sa famille et de ses amis, nous serons heureux de célébrer avec vous cette étape importante de sa vie.</p>
+
+          <div class="event-details">
+            <div class="ev-row">
+              <span class="ev-label">Date</span>
+              <span class="ev-value">Le <em>Jeudi 05 novembre 2026</em></span>
+            </div>
+            <div class="ev-row">
+              <span class="ev-label">Heure</span>
+              <span class="ev-value">L'office débutera à <em>8h30</em></span>
+            </div>
+            <div class="ev-row">
+              <span class="ev-label">Lieu</span>
+              <span class="ev-value">aux Salons <em>YONO Caesarea</em></span>
+              <span class="ev-value" style="font-size:16px;color:var(--ink-soft)">Khalamish St 18 · Caesarea, Israel</span>
+            </div>
+          </div>
+
+          <a class="waze-btn" href="https://waze.com/ul?q=Khalamish%20St%2018%20Caesarea%20Israel" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12c0 4.97-4.03 9-9 9-1.05 0-2.06-.18-3-.51L4 22l1.51-5C4.55 16.06 4 13.61 4 12 4 7.03 8.03 3 12.5 3 17.47 3 21 7.03 21 12z"/></svg>
+            <span>Voir l'itinéraire Waze</span>
+          </a>
+
+          <div class="followup"><span class="followup-text">L'office sera suivi d'une réception</span></div>
+        </div>
+
+        <!-- Page 2 : Vidéo souvenir -->
+        <div class="deck-page video-page">
+          <div class="video-block-title">Une <em>vidéo</em> pour Ethan !</div>
+          <p class="video-block-text">Laissez un souvenir mémorable à Ethan : envoyez-nous une vidéo surprise pour lui.</p>
+          <a class="video-btn" href="upload.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16 M4 12h16"/></svg>
+            <span>Envoyer ma vidéo</span>
+          </a>
+        </div>
+
+        <!-- Page 3 : RSVP -->
+        <div class="deck-page rsvp-page" id="rsvp">
+          <div class="rsvp-title">Confirmez votre présence</div>
+          <form id="rsvpForm">
+            <div class="rsvp-row">
+              <div class="f"><label>Prénom</label><input type="text" name="prenom" required></div>
+              <div class="f"><label>Nom</label><input type="text" name="nom" required></div>
+            </div>
+            <div class="rsvp-pres">
+              <label><input type="radio" name="presence" value="oui" checked> Je serai présent(e)</label>
+              <label><input type="radio" name="presence" value="non"> Je ne pourrai pas venir</label>
+            </div>
+            <div class="rsvp-row">
+              <div class="f"><label>Adultes</label><input type="number" name="adults" min="0" max="20" value="1"></div>
+              <div class="f"><label>Enfants (-12 ans)</label><input type="number" name="children" min="0" max="20" value="0"></div>
+            </div>
+            <div class="f" style="margin-bottom:8px"><label>Un petit mot (optionnel)</label><textarea name="message" placeholder="Ex. Mazal Tov à toute la famille…"></textarea></div>
+            <button type="submit" class="rsvp-submit">Envoyer ma réponse</button>
+            <p class="rsvp-status" id="rsvpStatus"></p>
+          </form>
+          <p class="rsvp-thanks">Merci infiniment !<br>Votre réponse a bien été enregistrée.</p>
+        </div>
+
+      </div>
     </div>
 
-    <p class="invite-sub">Entouré de sa famille et de ses amis, nous serons heureux de célébrer avec vous cette étape importante de sa vie.</p>
-
-    <div class="event-details">
-      <div class="ev-row">
-        <span class="ev-label">Date</span>
-        <span class="ev-value">Le <em>Jeudi 05 novembre 2026</em></span>
-      </div>
-      <div class="ev-row">
-        <span class="ev-label">Heure</span>
-        <span class="ev-value">L'office débutera à <em>8h30</em></span>
-      </div>
-      <div class="ev-row">
-        <span class="ev-label">Lieu</span>
-        <span class="ev-value">aux Salons <em>YONO Caesarea</em></span>
-        <span class="ev-value" style="font-size:16px;color:var(--ink-soft)">Khalamish St 18 · Caesarea, Israel</span>
-      </div>
-    </div>
-
-    <a class="waze-btn" href="https://waze.com/ul?q=Khalamish%20St%2018%20Caesarea%20Israel" target="_blank">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12c0 4.97-4.03 9-9 9-1.05 0-2.06-.18-3-.51L4 22l1.51-5C4.55 16.06 4 13.61 4 12 4 7.03 8.03 3 12.5 3 17.47 3 21 7.03 21 12z"/></svg>
-      <span>Voir l'itinéraire Waze</span>
-    </a>
-
-    <div class="followup"><span class="followup-text">L'office sera suivi d'une réception</span></div>
-
-    <div class="video-block">
-      <div class="video-block-title">Une <em>vidéo</em> pour Ethan !</div>
-      <p class="video-block-text">Laissez un souvenir mémorable à Ethan : envoyez-nous une vidéo surprise pour lui.</p>
-      <a class="video-btn" href="upload.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16 M4 12h16"/></svg>
-        <span>Envoyer ma vidéo</span>
-      </a>
-    </div>
-
-    <div class="rsvp" id="rsvp">
-      <div class="rsvp-title">Confirmez votre présence</div>
-      <form id="rsvpForm">
-        <div class="rsvp-row">
-          <div class="f"><label>Prénom</label><input type="text" name="prenom" required></div>
-          <div class="f"><label>Nom</label><input type="text" name="nom" required></div>
-        </div>
-        <div class="rsvp-pres">
-          <label><input type="radio" name="presence" value="oui" checked> Je serai présent(e)</label>
-          <label><input type="radio" name="presence" value="non"> Je ne pourrai pas venir</label>
-        </div>
-        <div class="rsvp-row">
-          <div class="f"><label>Adultes</label><input type="number" name="adults" min="0" max="20" value="1"></div>
-          <div class="f"><label>Enfants (-12 ans)</label><input type="number" name="children" min="0" max="20" value="0"></div>
-        </div>
-        <div class="f" style="margin-bottom:8px"><label>Un petit mot (optionnel)</label><textarea name="message" placeholder="Ex. Mazal Tov à toute la famille…"></textarea></div>
-        <button type="submit" class="rsvp-submit">Envoyer ma réponse</button>
-        <p class="rsvp-status" id="rsvpStatus"></p>
-      </form>
-      <p class="rsvp-thanks">Merci infiniment !<br>Votre réponse a bien été enregistrée.</p>
+    <div class="deck-nav">
+      <button class="nav-arrow prev" id="navPrev" aria-label="Page précédente">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="pager" id="pager"></div>
+      <button class="nav-arrow next" id="navNext" aria-label="Page suivante">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </div>
 
 <script>
 (function(){
+  // ---- Pagination (deck) ----
+  var viewport = document.querySelector('.deck-viewport');
+  var track = document.getElementById('deckTrack');
+  var pages = [].slice.call(track.children);
+  var prevBtn = document.getElementById('navPrev');
+  var nextBtn = document.getElementById('navNext');
+  var pager = document.getElementById('pager');
+  var idx = 0;
+
+  pages.forEach(function(p, i){
+    var d = document.createElement('button');
+    d.className = 'dot';
+    d.setAttribute('aria-label', 'Page ' + (i + 1));
+    d.addEventListener('click', function(){ go(i); });
+    pager.appendChild(d);
+  });
+  var dots = [].slice.call(pager.children);
+
+  function setHeight(){
+    viewport.style.height = pages[idx].offsetHeight + 'px';
+  }
+
+  function go(n){
+    idx = Math.max(0, Math.min(pages.length - 1, n));
+    track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+    setHeight();
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === pages.length - 1;
+  }
+  window.addEventListener('resize', setHeight);
+
+  prevBtn.addEventListener('click', function(){ go(idx - 1); });
+  nextBtn.addEventListener('click', function(){ go(idx + 1); });
+
+  document.addEventListener('keydown', function(e){
+    var t = e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || e.target.isContentEditable) return;
+    if (e.key === 'ArrowRight') { go(idx + 1); }
+    else if (e.key === 'ArrowLeft') { go(idx - 1); }
+  });
+
+  var sx = 0, sy = 0;
+  viewport.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+  viewport.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) { dx < 0 ? go(idx + 1) : go(idx - 1); }
+  }, {passive:true});
+
+  go(0);
+
+  // ---- RSVP ----
   var wrap = document.getElementById('rsvp');
   var form = document.getElementById('rsvpForm');
   var status = document.getElementById('rsvpStatus');
@@ -227,6 +314,7 @@
     .then(function(res){
       if (res.success) {
         wrap.classList.add('sent');
+        setHeight();
       } else {
         btn.disabled = false;
         btn.textContent = 'Envoyer ma réponse';
