@@ -46,9 +46,22 @@
 
   /* Deck (pages) — forcé en LTR pour un défilement physique prévisible,
      le contenu de chaque page reste en RTL via direction:rtl ci-dessous */
+  .deck-shell{position:relative;direction:ltr}
   .deck-viewport{overflow:hidden;position:relative;direction:ltr}
   .deck-track{display:flex;width:100%;align-items:flex-start;transition:transform .45s cubic-bezier(.76,0,.24,1),height .35s ease}
   .deck-page{flex:0 0 100%;width:100%;min-width:0;direction:rtl}
+
+  .side-arrow{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:1px solid rgba(168,134,90,.45);background:rgba(250,243,231,.9);backdrop-filter:blur(4px);display:grid;place-items:center;cursor:pointer;color:var(--ink-soft);transition:all .2s;z-index:3;padding:0;box-shadow:0 6px 16px rgba(138,106,72,.15)}
+  .side-arrow:hover{border-color:var(--gold-deep);color:var(--gold-deep);background:var(--paper)}
+  .side-arrow svg{width:14px;height:14px}
+  .side-arrow.prev{left:-14px}
+  .side-arrow.next{right:-14px}
+  .side-arrow:disabled{opacity:0;pointer-events:none}
+  @media(max-width:480px){
+    .side-arrow{width:28px;height:28px}
+    .side-arrow.prev{left:-10px}
+    .side-arrow.next{right:-10px}
+  }
 
   .deck-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:20px;padding-top:14px;border-top:1px dashed rgba(168,134,90,.3);direction:ltr}
   .nav-arrow{width:30px;height:30px;border-radius:50%;border:1px solid rgba(168,134,90,.4);background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink-soft);transition:all .2s;flex:none;padding:0}
@@ -142,6 +155,13 @@
     <span class="corner-tl"></span><span class="corner-br"></span>
     <span class="bsd">בס"ד</span>
 
+    <div class="deck-shell">
+    <button class="side-arrow prev" id="sidePrev" aria-label="עמוד קודם">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="side-arrow next" id="sideNext" aria-label="עמוד הבא">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
     <div class="deck-viewport">
       <div class="deck-track" id="deckTrack">
 
@@ -228,6 +248,7 @@
 
       </div>
     </div>
+    </div>
 
     <div class="deck-nav">
       <button class="nav-arrow prev" id="navPrev" aria-label="עמוד קודם">
@@ -248,6 +269,8 @@
   var pages = [].slice.call(track.children);
   var prevBtn = document.getElementById('navPrev');
   var nextBtn = document.getElementById('navNext');
+  var sidePrevBtn = document.getElementById('sidePrev');
+  var sideNextBtn = document.getElementById('sideNext');
   var pager = document.getElementById('pager');
   var idx = 0;
 
@@ -271,11 +294,15 @@
     dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
     prevBtn.disabled = idx === 0;
     nextBtn.disabled = idx === pages.length - 1;
+    sidePrevBtn.disabled = idx === 0;
+    sideNextBtn.disabled = idx === pages.length - 1;
   }
   window.addEventListener('resize', setHeight);
 
   prevBtn.addEventListener('click', function(){ go(idx - 1); });
   nextBtn.addEventListener('click', function(){ go(idx + 1); });
+  sidePrevBtn.addEventListener('click', function(){ go(idx - 1); });
+  sideNextBtn.addEventListener('click', function(){ go(idx + 1); });
 
   document.addEventListener('keydown', function(e){
     var t = e.target.tagName;
