@@ -76,6 +76,31 @@
 
   .followup{font-family:'Frank Ruhl Libre',serif;font-style:italic;font-size:17px;color:var(--ink-soft);margin-top:32px;line-height:1.6}
 
+  /* RSVP */
+  .rsvp{margin-top:32px;padding-top:26px;border-top:1px dashed rgba(168,134,90,.35);text-align:right}
+  .rsvp-title{font-family:'Frank Ruhl Libre',serif;font-size:14px;letter-spacing:.1em;color:var(--bronze);font-weight:500;text-align:center;margin-bottom:18px}
+  .rsvp-row{display:flex;gap:10px;margin-bottom:12px}
+  .rsvp-row .f{flex:1;min-width:0}
+  .rsvp label{display:block;font-family:'Frank Ruhl Libre',serif;font-size:12px;color:var(--bronze);font-weight:500;margin-bottom:5px}
+  .rsvp input[type=text],.rsvp input[type=number],.rsvp textarea{
+    width:100%;font-family:'Frank Ruhl Libre',serif;font-size:16px;color:var(--ink);
+    background:transparent;border:none;border-bottom:1px solid rgba(168,134,90,.4);padding:6px 2px;
+  }
+  .rsvp input:focus,.rsvp textarea:focus{outline:none;border-color:var(--gold-deep)}
+  .rsvp textarea{resize:vertical;min-height:44px}
+  .rsvp-pres{display:flex;gap:20px;margin-bottom:14px;justify-content:center}
+  .rsvp-pres label{display:flex;align-items:center;gap:6px;font-family:'Frank Ruhl Libre',serif;font-size:15px;color:var(--ink);font-weight:400}
+  .rsvp-check{display:flex;align-items:center;gap:6px;justify-content:center;margin-bottom:14px;font-family:'Frank Ruhl Libre',serif;font-size:14px;color:var(--ink)}
+  .rsvp input[type=radio],.rsvp input[type=checkbox]{accent-color:var(--gold-deep)}
+  .rsvp-submit{display:block;width:100%;margin-top:6px;padding:13px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:'Frank Ruhl Libre',serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .25s}
+  .rsvp-submit:hover{background:var(--bronze);border-color:var(--bronze)}
+  .rsvp-submit:disabled{opacity:.6;cursor:default}
+  .rsvp-status{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:14px;margin-top:12px}
+  .rsvp-status.err{color:#a8493a}
+  .rsvp.sent form{display:none}
+  .rsvp-thanks{display:none;text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:16px;color:var(--gold-deep);line-height:1.6}
+  .rsvp.sent .rsvp-thanks{display:block}
+
   @media print{
     body{padding:0;background:var(--paper)}
     .card{box-shadow:none;max-width:100%}
@@ -134,7 +159,82 @@
     </a>
 
     <p class="followup">— התפילה תלווה בקידוש —</p>
+
+    <div class="rsvp" id="rsvp">
+      <div class="rsvp-title">אישור הגעה</div>
+      <form id="rsvpForm">
+        <div class="rsvp-row">
+          <div class="f"><label>שם פרטי</label><input type="text" name="prenom" required></div>
+          <div class="f"><label>שם משפחה</label><input type="text" name="nom" required></div>
+        </div>
+        <div class="rsvp-pres">
+          <label><input type="radio" name="presence" value="oui" checked> אגיע בשמחה</label>
+          <label><input type="radio" name="presence" value="non"> לא אוכל להגיע</label>
+        </div>
+        <div class="rsvp-row">
+          <div class="f"><label>כמה תגיעו?</label><input type="number" name="guests" min="1" max="20" value="1"></div>
+        </div>
+        <label class="rsvp-check"><input type="checkbox" name="transport"> אזדקק להסעה מהישיבה</label>
+        <div class="f" style="margin-bottom:8px"><label>הערה (לא חובה)</label><textarea name="message" placeholder="למשל: מזל טוב!"></textarea></div>
+        <button type="submit" class="rsvp-submit">שלח אישור הגעה</button>
+        <p class="rsvp-status" id="rsvpStatus"></p>
+      </form>
+      <p class="rsvp-thanks">תודה רבה!<br>התשובה שלך נשלחה בהצלחה.</p>
+    </div>
   </div>
+
+<script>
+(function(){
+  var wrap = document.getElementById('rsvp');
+  var form = document.getElementById('rsvpForm');
+  var status = document.getElementById('rsvpStatus');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(form);
+    var btn = form.querySelector('.rsvp-submit');
+    btn.disabled = true;
+    btn.textContent = 'שולח…';
+    status.textContent = '';
+    status.className = 'rsvp-status';
+
+    var msg = (f.get('message') || '').trim();
+    msg = 'הסעה מהישיבה: ' + (f.get('transport') ? 'כן' : 'לא') + (msg ? ' · ' + msg : '');
+
+    fetch('/api/rsvp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nom: f.get('nom').trim(),
+        prenom: f.get('prenom').trim(),
+        pres_mishte: f.get('presence') || 'non',
+        adults_mishte: f.get('guests'),
+        children_mishte: 0,
+        pres_shabbat: 'non',
+        adults_shabbat: 0,
+        children_shabbat: 0,
+        message: msg
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res.success) {
+        wrap.classList.add('sent');
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'שלח אישור הגעה';
+        status.textContent = 'שגיאה: ' + (res.error || 'נסו שוב.');
+        status.className = 'rsvp-status err';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = 'שלח אישור הגעה';
+      status.textContent = 'שגיאת רשת, בדקו את החיבור.';
+      status.className = 'rsvp-status err';
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
