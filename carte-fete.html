@@ -74,6 +74,31 @@
   .followup{margin:20px auto 0;padding:12px 18px;max-width:400px;border:1px solid rgba(168,134,90,.4);background:rgba(201,168,124,.1)}
   .followup-text{font-family:'Italiana',serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-deep);font-weight:400}
 
+  /* RSVP */
+  .rsvp{margin-top:28px;padding-top:24px;border-top:1px dashed rgba(168,134,90,.35);text-align:left}
+  .rsvp-title{font-family:'Italiana',serif;font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);text-align:center;margin-bottom:16px}
+  .rsvp-row{display:flex;gap:10px;margin-bottom:10px}
+  .rsvp-row .f{flex:1;min-width:0}
+  .rsvp label{display:block;font-family:'Italiana',serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--bronze);margin-bottom:4px}
+  .rsvp input[type=text],.rsvp input[type=number],.rsvp textarea{
+    width:100%;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--ink);
+    background:transparent;border:none;border-bottom:1px solid rgba(168,134,90,.4);padding:6px 2px;
+  }
+  .rsvp input:focus,.rsvp textarea:focus{outline:none;border-color:var(--gold-deep)}
+  .rsvp textarea{resize:vertical;min-height:44px;font-style:italic}
+  .rsvp-pres{display:flex;gap:18px;margin-bottom:12px}
+  .rsvp-pres label{display:flex;align-items:center;gap:6px;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--ink);text-transform:none;letter-spacing:0}
+  .rsvp input[type=radio]{accent-color:var(--gold-deep)}
+  .rsvp-submit{display:block;width:100%;margin-top:16px;padding:13px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:'Italiana',serif;font-size:11px;letter-spacing:.35em;text-transform:uppercase;cursor:pointer;transition:all .25s}
+  .rsvp-submit:hover{background:var(--bronze);border-color:var(--bronze)}
+  .rsvp-submit:disabled{opacity:.6;cursor:default}
+  .rsvp-status{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;margin-top:12px}
+  .rsvp-status.ok{color:var(--gold-deep)}
+  .rsvp-status.err{color:#a8493a}
+  .rsvp.sent form{display:none}
+  .rsvp-thanks{display:none;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-deep);line-height:1.5}
+  .rsvp.sent .rsvp-thanks{display:block}
+
   @media print{
     body{padding:0;background:var(--paper)}
     .card{box-shadow:none;max-width:100%}
@@ -127,7 +152,79 @@
     </a>
 
     <div class="followup"><span class="followup-text">L'office sera suivi d'une réception</span></div>
+
+    <div class="rsvp" id="rsvp">
+      <div class="rsvp-title">Confirmez votre présence</div>
+      <form id="rsvpForm">
+        <div class="rsvp-row">
+          <div class="f"><label>Prénom</label><input type="text" name="prenom" required></div>
+          <div class="f"><label>Nom</label><input type="text" name="nom" required></div>
+        </div>
+        <div class="rsvp-pres">
+          <label><input type="radio" name="presence" value="oui" checked> Je serai présent(e)</label>
+          <label><input type="radio" name="presence" value="non"> Je ne pourrai pas venir</label>
+        </div>
+        <div class="rsvp-row">
+          <div class="f"><label>Adultes</label><input type="number" name="adults" min="0" max="20" value="1"></div>
+          <div class="f"><label>Enfants (-12 ans)</label><input type="number" name="children" min="0" max="20" value="0"></div>
+        </div>
+        <div class="f" style="margin-bottom:8px"><label>Un petit mot (optionnel)</label><textarea name="message" placeholder="Ex. Mazal Tov à toute la famille…"></textarea></div>
+        <button type="submit" class="rsvp-submit">Envoyer ma réponse</button>
+        <p class="rsvp-status" id="rsvpStatus"></p>
+      </form>
+      <p class="rsvp-thanks">Merci infiniment !<br>Votre réponse a bien été enregistrée.</p>
+    </div>
   </div>
+
+<script>
+(function(){
+  var wrap = document.getElementById('rsvp');
+  var form = document.getElementById('rsvpForm');
+  var status = document.getElementById('rsvpStatus');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(form);
+    var btn = form.querySelector('.rsvp-submit');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+    status.textContent = '';
+    status.className = 'rsvp-status';
+
+    fetch('/api/rsvp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nom: f.get('nom').trim(),
+        prenom: f.get('prenom').trim(),
+        pres_mishte: f.get('presence') || 'non',
+        adults_mishte: f.get('adults'),
+        children_mishte: f.get('children'),
+        pres_shabbat: 'non',
+        adults_shabbat: 0,
+        children_shabbat: 0,
+        message: f.get('message').trim()
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res.success) {
+        wrap.classList.add('sent');
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer ma réponse';
+        status.textContent = 'Erreur : ' + (res.error || 'réessayez.');
+        status.className = 'rsvp-status err';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = 'Envoyer ma réponse';
+      status.textContent = 'Erreur réseau, vérifiez votre connexion.';
+      status.className = 'rsvp-status err';
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
