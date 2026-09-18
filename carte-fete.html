@@ -76,7 +76,8 @@
 
   .logo{width:min(72px,24vw);margin:0 auto 14px;filter:drop-shadow(0 12px 24px rgba(138,106,72,.2))}
 
-  .parasha-he{font-family:'Frank Ruhl Libre',serif;font-size:20px;color:var(--gold-deep);direction:rtl;unicode-bidi:isolate;margin-bottom:16px}
+  .parasha-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--gold-deep);letter-spacing:.03em;margin-bottom:16px}
+  .parasha-note em{font-style:normal;font-weight:500;color:var(--bronze);font-family:'Frank Ruhl Libre',serif;font-size:19px;unicode-bidi:isolate}
 
   .ornament{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 16px}
   .ornament .line{width:64px;height:1px;background:var(--gold-deep)}
@@ -163,7 +164,7 @@
           <div class="eyebrow">Bar Mitsva</div>
           <img class="logo" src="assets/logo-ethan.webp" alt="Ethan">
 
-          <div class="parasha-he">— חַיֵּי שָׂרָה —</div>
+          <p class="parasha-note">— à l'occasion de la Parasha <em>חיי שרה</em> —</p>
 
           <p class="invite-lead"><strong>Annaelle et Jonathan Haziza,</strong><br><strong>Ava et Aaron,</strong><br>ont le plaisir de vous convier à la Bar&nbsp;Mitsva d'<em>Ethan</em></p>
           <div class="invite-he">איתן יצחק</div>
@@ -274,6 +275,18 @@
     viewport.style.height = pages[idx].offsetHeight + 'px';
   }
 
+  // Aligne les flèches latérales sur la ligne "איתן יצחק"
+  var deckShell = document.querySelector('.deck-shell');
+  var inviteHe = document.querySelector('.invite-he');
+  function alignSideArrows(){
+    if (!inviteHe) return;
+    var shellTop = deckShell.getBoundingClientRect().top;
+    var heRect = inviteHe.getBoundingClientRect();
+    var centerY = heRect.top + heRect.height / 2 - shellTop;
+    sidePrevBtn.style.top = centerY + 'px';
+    sideNextBtn.style.top = centerY + 'px';
+  }
+
   function go(n){
     idx = Math.max(0, Math.min(pages.length - 1, n));
     track.style.transform = 'translateX(-' + (idx * 100) + '%)';
@@ -284,7 +297,7 @@
     sidePrevBtn.disabled = idx === 0;
     sideNextBtn.disabled = idx === pages.length - 1;
   }
-  window.addEventListener('resize', setHeight);
+  window.addEventListener('resize', function(){ setHeight(); alignSideArrows(); });
 
   prevBtn.addEventListener('click', function(){ go(idx - 1); });
   nextBtn.addEventListener('click', function(){ go(idx + 1); });
@@ -307,6 +320,8 @@
   }, {passive:true});
 
   go(0);
+  alignSideArrows();
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(alignSideArrows); }
 
   // ---- RSVP ----
   var wrap = document.getElementById('rsvp');
